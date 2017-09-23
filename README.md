@@ -35,7 +35,7 @@ vagrant up
  vagrant ssh
  ```
  Once logged into VM, cd into the vagrant/LogAnalysis
-and run the command below to load the data.
+and run the command below to load the data,
 ```
 psql -d news -f newsdata.sql
 ```
