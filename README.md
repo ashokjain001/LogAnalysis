@@ -32,7 +32,7 @@ vagrant up
  ```
  Then log into it with,
  ```
- vagrant ssh.
+ vagrant ssh
  ```
  Once logged into VM, cd into the vagrant/LogAnalysis
 and run the command below to load the data.
