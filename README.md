@@ -36,7 +36,7 @@ vagrant up
 and run the command below to load the data.
 ```
 psql -d news -f newsdata.sql.
-```Q
+```
 ## Executing
 Run this code in vagrant terminal,
 ```
