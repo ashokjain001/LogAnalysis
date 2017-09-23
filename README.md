@@ -1,6 +1,6 @@
 Log Analysis Project
 ====================
-This project is part of Udacity Full stack nanodegree program.
+This project is part of Udacity's Full stack nanodegree program.
 The objective of this project is to create a reporting tool using Python DB-API that prints out reports based on data in the database.
 The 'news' database contains newspaper articles, authors, as well as the web server log for the site.
 
@@ -18,22 +18,28 @@ Skills learnt and demonstrated in this project are:
 
 ## Download
 You need to have Virtual Machine and Vagrant installed in order to run the DB and Python script.
-
-You can clone this repository in vagrant subdirectory and download all the files required to run this project. The sql file inside is called newsdata.sql. Put this file into the vagrant directory.
-ex.
-cloning the git repository-
+Inside the vagrant subdirectory, clone this git repository and content of the cloned repository will be shared with your virtual machine.
 ```
-git clone https://github.com/ashokjain001/FullStack.git --recursive
+git clone https://github.com/ashokjain001/LogAnalysis.git
 ```
+ Unzipping newsdata.zip will create newsdata.sql file.
 
+If you need to bring the virtual machine back online, do so now by running,
+```
+vagrant up
+ ```
+ Then log into it with,
+ ```
+ vagrant ssh.
+ ```
+ once logged into VM, cd into the vagrant/LogAnalysis
+and run the command below to load the data.
+```
+psql -d news -f newsdata.sql.
+```Q
 ## Executing
-the Log Analysis Project
-start your Vagrant by
-
+Run this code in vagrant terminal,
 ```
-
 python logAnalysis.py
 ```
-
-to execute the code and it should open a webpage with movie information.
-
+This will run the python script and output 3 reports one after the other. You can access the output file logAnalysisOutput.txt for the output without running the code.
