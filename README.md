@@ -9,7 +9,7 @@ Reporting tool developed in this project will aim to answer these 3 questions:
 2. Who are the most popular article authors of all time?
 3. On which days did more than 1% of requests lead to errors?
 
-Skills learnt and demonstrated in this project are:
+some of the skills learnt and demonstrated in this project:
 * Joining 2 or more Database tables.
 * Using basic select, where statements.
 * Utilizing aggregations functions to answer metric questions.
@@ -41,7 +41,7 @@ and run the command below to load the data,
 ```
 psql -d news -f newsdata.sql
 ```
-## Executing
+## Execution
 Run this code in vagrant terminal,
 ```
 python logAnalysis.py
