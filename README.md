@@ -16,16 +16,19 @@ Skills learnt and demonstrated in this project are:
 * Writing code with Python DB-API.
 * Effectively using common table expressions.
 
-## Download and Configuration
-You need to have Virtual Machine and Vagrant installed in order to run the DB and Python script.
-Download and Install [Vagrant](https://www.vagrantup.com/downloads.html) and [VM](https://www.virtualbox.org/wiki/Downloads).
-After installation navigate to vagrant subdirectory by running command cd vagrant in your terminal and download project files by cloning this git repository and content of the cloned repository will be shared with your virtual machine.
+
+## Requirements
+Virtual Machine and Vagrant are required to run the reporting scripts,
+download and Install [Vagrant](https://www.vagrantup.com/downloads.html) and [VM](https://www.virtualbox.org/wiki/Downloads).
+
+## Download and setup
+After installation navigate to vagrant subdirectory by running command cd vagrant in your terminal and download required project files by cloning git repository mentioned below and contents will be shared with your virtual machine.
 ```
 git clone https://github.com/ashokjain001/LogAnalysis.git
 ```
  Unzipping newsdata.zip will create newsdata.sql file.
 
-If you need to bring the virtual machine back online, do so now by running the following command in terminal,
+If you need to bring the virtual machine online, do so by running the following command in terminal,
 ```
 vagrant up
  ```

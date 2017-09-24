@@ -2,7 +2,10 @@
 
 import psycopg2
 
-DBNAME="news"
+
+# declaring database
+DBNAME = "news"
+
 
 def loganalysis():
 
@@ -37,11 +40,11 @@ def popularArticle(cursor):
                         LIMIT 3;""")
 
     # Fetch all the results from the current statement
-    results=cursor.fetchall()
+    results = cursor.fetchall()
 
     # printing the results
     print "\nThe most popular three articles of all time:"
-    for article,views in results:
+    for article, views in results:
         print('{0:<40}{1} views'.format(article, views))
 
 
@@ -61,7 +64,7 @@ def popularAuthors(cursor):
 
     # printing the results
     print "\nThe most popular article authors of all time:"
-    for author,views in results:
+    for author, views in results:
         print('{0:<40}{1} views'.format(author, views))
 
 
@@ -89,10 +92,10 @@ def errorsPerDay(cursor):
 
     # printing the results
     print "\nDays with more than 1% of requests lead to errors:"
-    for day,error in results:
+    for day, error in results:
         print('{0:<40}{1} views'.format(day, error))
 
 
 # this executes this python module
-if __name__=='__main__':
+if __name__ == '__main__':
     loganalysis()
