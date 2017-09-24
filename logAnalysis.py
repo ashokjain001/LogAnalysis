@@ -7,44 +7,92 @@ DBNAME="news"
 def loganalysis():
 
     # connect to the database news
-    conn = psycopg2.connect(database=DBNAME)
+    try:
+        conn = psycopg2.connect(database=DBNAME)
+    except:
+        print "Unable to connect to database"
 
-    # make a cursor object from a connection, Cursors are used to send SQL statements to the database and fetch results
+    # make a cursor object from a connection, Cursors are used to send
+    # SQL statements to the database and fetch results
     cursor = conn.cursor()
 
-    # execute SQL statement on the database
-    cursor.execute("select right(log.path,length(log.path)-9), count(*) from log group by path order by count(*) desc OFFSET 1 LIMIT 3;")
-
-    # Fetch all the results from the current statement
-    results=cursor.fetchall()
-
-    # printing the results 1
-    print "\nThe most popular three articles of all time:"
-    for row in results:
-        space = " "*(30-len(row[0]))
-        print row[0], space,row[1], "views"
-
-    cursor.execute("select authors.name,count(*) from articles inner join authors on articles.author = authors.id inner join log on right(log.path,length(log.path)-9) =articles.slug group by authors.name order by count(*) desc")
-    results = cursor.fetchall()
-
-    # printing the results 2
-    print "\nThe most popular article authors of all time:"
-    for row in results:
-        space = " " * (30 - len(row[0]))
-        print row[0], space, row[1], "views"
-
-    cursor.execute("with t1 as (select to_char(time,'MONTH DD,YYYY') as days, count(*) as agg from log group by to_char(time,'MONTH DD,YYYY')), t2 as (select to_char(time,'MONTH DD,YYYY') as days, count(*) as agg from log where status like '%NOT%' group by to_char(time,'MONTH DD,YYYY')) select t1.days,to_char((cast(t2.agg as decimal)/t1.agg)*100.0,'99.99%') as errors from t1 inner join t2 on t1.days = t2.days where (cast(t2.agg as decimal)/t1.agg)*100.0> 1.00;")
-    results = cursor.fetchall()
-
-    # printing the results 3
-    print "\nDays with more than 1% of requests lead to errors:"
-    for row in results:
-        space = " " * (26 - len(row[0]))
-        print row[0], space, row[1], "errors"
+    # calling seperate methods to answer
+    # eachreporting questions
+    popularArticle(cursor)
+    popularAuthors(cursor)
+    errorsPerDay(cursor)
 
     # closing the connection
     conn.close()
 
 
-# this helps in executing this python file
-print loganalysis()
+def popularArticle(cursor):
+
+    # execute SQL statement on the database
+    cursor.execute("""SELECT articles.title, count(*)
+                        FROM articles INNER JOIN log ON
+                        log.path = '/article/' || articles.slug
+                        GROUP BY title
+                        ORDER BY COUNT(*) DESC
+                        LIMIT 3;""")
+
+    # Fetch all the results from the current statement
+    results=cursor.fetchall()
+
+    # printing the results
+    print "\nThe most popular three articles of all time:"
+    for article,views in results:
+        print('{0:<40}{1} views'.format(article, views))
+
+
+def popularAuthors(cursor):
+
+    # execute SQL statement on the database
+    cursor.execute("""SELECT authors.name,count(*)
+                      FROM articles INNER JOIN authors
+                      on articles.author = authors.id
+                      INNER JOIN log ON
+                      log.path = '/article/' || articles.slug
+                      GROUP BY authors.name
+                      ORDER BY count(*) DESC""")
+
+    # Fetch all the results from the current statement
+    results = cursor.fetchall()
+
+    # printing the results
+    print "\nThe most popular article authors of all time:"
+    for author,views in results:
+        print('{0:<40}{1} views'.format(author, views))
+
+
+def errorsPerDay(cursor):
+
+    # execute SQL statement on the database
+    cursor.execute("""WITH t1 as
+                      (SELECT time::date as days,
+                      count(*) as agg
+                      FROM log
+                      GROUP BY time::date
+                      ),t2 as (SELECT time::date as days,
+                      count(*) as agg
+                      FROM log
+                      WHERE status like '%NOT%'
+                      GROUP BY time::date
+                      )SELECT to_char(t1.days,'FMMONTH DD,YYYY') as days,
+                      to_char((cast(t2.agg as decimal)/t1.agg)*100.0,'99.99%')
+                      as errors
+                      FROM t1 INNER JOIN t2 ON t1.days = t2.days
+                      where (cast(t2.agg as decimal)/t1.agg)*100.0> 1.00;""")
+
+    # Fetch all the results from the current statement
+    results = cursor.fetchall()
+
+    # printing the results
+    print "\nDays with more than 1% of requests lead to errors:"
+    for day,error in results:
+        print('{0:<40}{1} views'.format(day, error))
+
+
+# this executes this python module
+if __name__=='__main__':
+    loganalysis()
